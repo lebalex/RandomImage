@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Random Image</string>
+    <string name="action_save">Save</string>
+    <string name="action_give">Share</string>
+    <string name="save_ok">Image saved</string>
+    <string name="save_error">Save error</string>
+    <string name="erotic_content">Erotic content</string>
+    <string name="unlock">Add-ons unlocked</string>
+    <string name="permission">Permission required</string>
+    <string name="permision_description">Permission to access the SD-CARD is required for this app to Download Image.</string>
+    <string name="already_unlock">already unlock</string>
+    <string name="error">Error</string>
+    <string name="not_inet_connection">Not internet connection</string>
+</resources>

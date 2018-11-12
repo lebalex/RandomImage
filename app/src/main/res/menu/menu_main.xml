@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="xyz.lebalex.randomimage.MainActivity">
+    <item
+        android:id="@+id/action_save"
+        android:orderInCategory="100"
+        android:title="@string/action_save"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_share"
+        android:orderInCategory="100"
+        android:title="@string/action_give"
+        app:showAsAction="never" />
+    <item android:id="@+id/erotic_content"
+        android:title="@string/erotic_content"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:checkable="true"
+        android:visible="false"/>
+</menu>

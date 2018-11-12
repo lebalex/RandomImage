@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Случайная картинка</string>
+    <string name="action_save">Сохранить</string>
+    <string name="action_give">Поделиться</string>
+    <string name="save_ok">Изображение сохранено</string>
+    <string name="save_error">Ошибка при сохранении изображения</string>
+    <string name="erotic_content">Эротическое содержимое</string>
+    <string name="unlock">Дополнения разблокированны</string>
+    <string name="permission">Требуется разрешение</string>
+    <string name="permision_description">Разрешение для доступа к SD-CARD для загрузки изображения.</string>
+    <string name="already_unlock">Уже разблокированны</string>
+    <string name="error">Ошибка</string>
+    <string name="not_inet_connection">Нет соединени</string>
+</resources>
