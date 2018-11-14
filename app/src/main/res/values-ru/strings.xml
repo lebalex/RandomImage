@@ -12,4 +12,6 @@
     <string name="already_unlock">Уже разблокированны</string>
     <string name="error">Ошибка</string>
     <string name="not_inet_connection">Нет соединени</string>
+    <string name="info">Инфо</string>
+    <string name="need_update">Есть новая версия, обновить?</string>
 </resources>

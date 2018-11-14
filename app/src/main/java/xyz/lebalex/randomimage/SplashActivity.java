@@ -1,9 +1,12 @@
 package xyz.lebalex.randomimage;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -34,11 +37,14 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 public class SplashActivity extends Activity {
 
     private static int SPLASH_TIME_OUT = 2000;
-    private String url = "http://lebalex.xyz/randomimage.json";
+    private String url =     "http://lebalex.xyz/randomimage.json";
+    private String url_apk = "http://lebalex.xyz/randomimage.apk";
+    private Context ctx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ctx=this;
 
 
         getJsonFromUrl(url);
@@ -48,9 +54,7 @@ public class SplashActivity extends Activity {
             getJsonFromUrl(ConstClass.getErotic_url(), true);
         }
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+
 
         /*new Handler().postDelayed(new Runnable(){
             @Override
@@ -99,6 +103,37 @@ public class SplashActivity extends Activity {
                 ConstClass.setApi_lockscreen_url(jsonObject.getString("api_lockscreen_url"));
                 ConstClass.setErotic_url(jsonObject.getString("erotic_url"));
                 ConstClass.setLockscreen_url(jsonObject.getString("lockscreen_url"));
+
+                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    if(!pInfo.versionName.equalsIgnoreCase(jsonObject.getString("ver")))
+                    {
+                        //need update
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle(R.string.info)
+                                .setMessage(R.string.need_update)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent browse = new Intent( Intent.ACTION_VIEW , Uri.parse( url_apk ) );
+                                        startActivity( browse );
+                                        finish();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                        Intent intent = new Intent(ctx, MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }else
+                    {
+                        Intent intent = new Intent(ctx, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
 
             } catch (JSONException e) {
                 MessageBox(e.getMessage());

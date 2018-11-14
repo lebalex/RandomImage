@@ -11,4 +11,6 @@
     <string name="already_unlock">already unlock</string>
     <string name="error">Error</string>
     <string name="not_inet_connection">Not internet connection</string>
+    <string name="info">Info</string>
+    <string name="need_update">New version, update?</string>
 </resources>

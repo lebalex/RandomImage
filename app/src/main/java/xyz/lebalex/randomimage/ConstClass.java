@@ -22,6 +22,7 @@ public class ConstClass {
     private static String erotic_url;
     private static String lockscreen_url;
 
+
     public static Map<String, Integer> getScreenMap() {
         return screenMap;
     }
@@ -142,4 +143,5 @@ public class ConstClass {
     public static void setLockscreen_url(String lockscreen_url) {
         ConstClass.lockscreen_url = lockscreen_url;
     }
+
 }
