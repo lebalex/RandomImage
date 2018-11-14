@@ -43,7 +43,7 @@ public class SplashActivity extends Activity {
 
         getJsonFromUrl(url);
 
-        if(!ConstClass.isUseApi()) {
+        if (!ConstClass.isUseApi()) {
             getJsonFromUrl(ConstClass.getLockscreen_url(), false);
             getJsonFromUrl(ConstClass.getErotic_url(), true);
         }
@@ -62,8 +62,8 @@ public class SplashActivity extends Activity {
         }, SPLASH_TIME_OUT);*/
 
     }
-    private void MessageBox(String error)
-    {
+
+    private void MessageBox(String error) {
         /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.error)
                 .setMessage(error)
@@ -77,6 +77,7 @@ public class SplashActivity extends Activity {
         AlertDialog alert = builder.create();
         alert.show();*/
     }
+
     private void getJsonFromUrl(String urls) {
 
         String resultJson = null;
@@ -111,7 +112,7 @@ public class SplashActivity extends Activity {
         } catch (Exception e4) {
             MessageBox(e4.getMessage());
         }
-        }
+    }
 
     private void getJsonFromUrl(String urls, boolean erotic) {
 
@@ -136,12 +137,12 @@ public class SplashActivity extends Activity {
         } catch (Exception e4) {
             MessageBox(e4.getMessage());
         }
+        Map<String, Integer> hashMap = new HashMap<String, Integer>();
+        Map<String, Integer> hashMapLocal = new HashMap<String, Integer>();
+        if (!erotic) hashMapLocal = ConstClass.getScreenMap(this);
+        if (erotic) hashMapLocal = ConstClass.getEroticMap(this);
         if (resultJson != null) {
             try {
-                Map<String, Integer> hashMap = new HashMap<String, Integer>();
-                Map<String, Integer> hashMapLocal = new HashMap<String, Integer>();
-                if(!erotic) hashMapLocal = ConstClass.getScreenMap(this);
-                if(erotic) hashMapLocal = ConstClass.getEroticMap(this);
                 JSONArray jsonArray = new JSONArray(resultJson);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     try {
@@ -155,14 +156,14 @@ public class SplashActivity extends Activity {
 
 
                 for (Map.Entry entry : hashMap.entrySet()) {
-                    if(hashMapLocal.containsKey(entry.getKey()))
-                        entry.setValue(hashMapLocal.get(entry.getKey()));
+                    if (hashMapLocal.containsKey(entry.getKey()))
+                        entry.setValue(max(hashMapLocal.get(entry.getKey()), (int) entry.getValue()));
                 }
 
 
-                if(!erotic)
+                if (!erotic)
                     ConstClass.setScreenMap(hashMap, this);
-                if(erotic)
+                if (erotic)
                     ConstClass.setEroticMap(hashMap, this);
 
                 //Log.d("splash", urls);
@@ -171,5 +172,10 @@ public class SplashActivity extends Activity {
                 MessageBox(e.getMessage());
             }
         }
+    }
+
+    private int max(int a, int b) {
+        if (a > b) return a;
+        else return b;
     }
 }

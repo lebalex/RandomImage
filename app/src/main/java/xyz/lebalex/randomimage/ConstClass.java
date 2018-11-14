@@ -16,7 +16,7 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 public class ConstClass {
     private static Map<String, Integer> screenMap = new HashMap<String, Integer>();
     private static Map<String, Integer> eroticMap = new HashMap<String, Integer>();
-    private static boolean useApi=true;
+    private static boolean useApi=false;
     private static String api_erotic_url;
     private static String api_lockscreen_url;
     private static String erotic_url;

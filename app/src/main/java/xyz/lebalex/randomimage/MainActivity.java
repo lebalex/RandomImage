@@ -54,6 +54,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
@@ -240,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 String photoUrl = (ConstClass.isUseApi())?loadImageFromNetworkApi():loadImageFromNetwork();
                 int countGet=0;
-                while (photoUrl == null && hashMapUrls.size()>0 && countGet<5) {
+                while (photoUrl == null && (hashMapUrls.size()>0 || ConstClass.isUseApi()) && countGet<5) {
                     photoUrl = (ConstClass.isUseApi())?loadImageFromNetworkApi():loadImageFromNetwork();
                     countGet++;
                 }
@@ -322,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
 
             String urls = obj.toString() + "/api/read/?num=1&type=photo&start=" + rdm.nextInt(hashMapUrls.get(obj) - 1);
 
+
             URL url = new URL(urls);
             HttpURLConnection dc = (HttpURLConnection) url.openConnection();
             dc.setConnectTimeout(timeout * 1000);
@@ -340,6 +343,7 @@ public class MainActivity extends AppCompatActivity {
                     parser.nextTag();
 
                     boolean isPhotoUrl = false;
+                    boolean isPhotoUrlBody = false;
 
                     int eventType = parser.getEventType();
                     while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -349,10 +353,15 @@ public class MainActivity extends AppCompatActivity {
                                 totalCount = parser.getAttributeValue(null, "total");
                             else if (parser.getName().compareTo("photo-url") == 0 && !isPhotoUrl) {
                                 isPhotoUrl = true;
+                            }else if (parser.getName().compareTo("regular-body") == 0 && !isPhotoUrl) {
+                                isPhotoUrlBody = true;
                             }
                         } else if (eventType == XmlPullParser.TEXT) {
                             if (isPhotoUrl && photoUrl == null) {
                                 photoUrl = parser.getText();
+                            }
+                            else if (isPhotoUrlBody && photoUrl == null) {
+                                photoUrl = parseReg(parser.getText());
                             }
                         }
                         eventType = parser.next();
@@ -378,6 +387,16 @@ public class MainActivity extends AppCompatActivity {
             eee.printStackTrace();
             return null;
         }
+    }
+
+    private String parseReg(String body)
+    {
+        Pattern p = Pattern.compile("src=\"([\\S]+)\"");
+        Matcher m = p.matcher(body);
+        if (m.find())
+            return m.group(1);
+        else
+            return null;
     }
 
 
