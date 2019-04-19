@@ -13,6 +13,7 @@ import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.internal.gmsg.HttpClient;
 
@@ -37,9 +38,10 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 public class SplashActivity extends Activity {
 
     private static int SPLASH_TIME_OUT = 2000;
-    private String url =     "http://lebalex.xyz/randomimage.json";
-    private String url_apk = "http://lebalex.xyz/randomimage.apk";
+    private String url =     "https://www.lebalex.xyz/randomimage.json";
+    private String url_apk = "https://www.lebalex.xyz/randomimage.apk";
     private Context ctx;
+    private String error=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,16 +138,29 @@ public class SplashActivity extends Activity {
                     }
 
             } catch (JSONException e) {
-                MessageBox(e.getMessage());
+                //MessageBox(e.getMessage());
+                //Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
+                error=e.getMessage();
             }
         } catch (UnsupportedEncodingException e1) {
-            MessageBox(e1.getMessage());
-        } catch (IllegalStateException e3) {
-            MessageBox(e3.getMessage());
-        } catch (IOException e4) {
-            MessageBox(e4.getMessage());
+            //Toast.makeText(ctx, e1.getMessage(), Toast.LENGTH_SHORT).show();
+            error=e1.getMessage();
+        } catch (IllegalStateException e2) {
+            //Toast.makeText(ctx, e2.getMessage(), Toast.LENGTH_SHORT).show();
+            error=e2.getMessage();
+        } catch (IOException e3) {
+            //Toast.makeText(ctx, e3.getMessage(), Toast.LENGTH_SHORT).show();
+            error=e3.getMessage();
         } catch (Exception e4) {
-            MessageBox(e4.getMessage());
+            //Toast.makeText(ctx, e4.getMessage(), Toast.LENGTH_SHORT).show();
+            error=e4.getMessage();
+        }
+        if(error!=null)
+        {
+            Intent intent = new Intent(ctx, MainActivity.class);
+            intent.putExtra("error",error);
+            startActivity(intent);
+            finish();
         }
     }
 

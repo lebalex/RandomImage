@@ -107,6 +107,25 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        String error = getIntent().getStringExtra("error");
+if(error!=null)
+{
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle(R.string.error)
+            .setMessage(error)
+            .setCancelable(false)
+            .setNegativeButton("ОК",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+    AlertDialog alert = builder.create();
+    alert.show();
+}
+
+
+
         final GestureDetector gesture = new GestureDetector(this,
                 new GestureDetector.SimpleOnGestureListener() {
 
