@@ -21,6 +21,8 @@ public class ConstClass {
     private static String api_lockscreen_url;
     private static String erotic_url;
     private static String lockscreen_url;
+    private static String imgLib_url;
+    private static int imgLib_count;
 
 
     public static Map<String, Integer> getScreenMap() {
@@ -143,5 +145,18 @@ public class ConstClass {
     public static void setLockscreen_url(String lockscreen_url) {
         ConstClass.lockscreen_url = lockscreen_url;
     }
+    public static String getImgLib_url() {
+        return imgLib_url;
+    }
 
+    public static void setImgLib_url(String imgLib_url) {
+        ConstClass.imgLib_url = imgLib_url;
+    }
+    public static int getImgLib_count() {
+        return imgLib_count;
+    }
+
+    public static void setImgLib_count(int imgLib_count) {
+        ConstClass.imgLib_count = imgLib_count;
+    }
 }

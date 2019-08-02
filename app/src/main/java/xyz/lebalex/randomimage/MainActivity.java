@@ -36,6 +36,7 @@ import com.google.android.gms.ads.MobileAds;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.BufferedReader;
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private Map<String, Integer> hashMapUrls = new HashMap<String, Integer>();
     Random rdm = new Random();
     private String globalUrlsApi;
+    private boolean isEro=false;
 
 
     @Override
@@ -252,6 +254,11 @@ if(error!=null)
             }
         }
     }
+    private String generateImgName()
+    {
+        int num = rdm.nextInt(ConstClass.getImgLib_count()-1)+1;
+        return "tumblr_"+String.format("%05d", num)+".jpg";
+    }
 
     private void loadDate() {
         mImageView.setEnabled(false);
@@ -261,9 +268,15 @@ if(error!=null)
             public void run() {
                 String photoUrl = (ConstClass.isUseApi())?loadImageFromNetworkApi():loadImageFromNetwork();
                 int countGet=0;
-                while (photoUrl == null && (hashMapUrls.size()>0 || ConstClass.isUseApi()) && countGet<5) {
-                    photoUrl = (ConstClass.isUseApi())?loadImageFromNetworkApi():loadImageFromNetwork();
-                    countGet++;
+                if(!isEro) {
+                    while (photoUrl == null && (hashMapUrls.size() > 0 || ConstClass.isUseApi()) && countGet < 5) {
+                        photoUrl = (ConstClass.isUseApi()) ? loadImageFromNetworkApi() : loadImageFromNetwork();
+                        countGet++;
+                    }
+                }
+                else {
+                    if(photoUrl == null)
+                        photoUrl = ConstClass.getImgLib_url() + generateImgName();
                 }
                 bitmap = getBitMapFromUrl(photoUrl, 10);
                 mImageView.post(new Runnable() {
@@ -341,7 +354,7 @@ if(error!=null)
             List keys = new ArrayList(hashMapUrls.keySet());
             Object obj = keys.get(rdm.nextInt(hashMapUrls.size() - 1));
 
-            String urls = obj.toString() + "/api/read/?num=1&type=photo&start=" + rdm.nextInt(hashMapUrls.get(obj) - 1);
+            String urls = obj.toString() + "/api/read/json/?num=1&type=photo&start=" + rdm.nextInt(hashMapUrls.get(obj) - 1);
 
 
             URL url = new URL(urls);
@@ -352,11 +365,24 @@ if(error!=null)
             dc.connect();
             int code = dc.getResponseCode();
             //Log.d("code", code+"");
-            String totalCount = null;
+            //String totalCount = null;
+            int totalCount=0;
             String photoUrl = null;
             if (code == 200) {
                 try {
-                    XmlPullParser parser = Xml.newPullParser();
+                    BufferedReader inputStream = new BufferedReader(new InputStreamReader(
+                            dc.getInputStream()));
+                    String resultJson = inputStream.readLine();
+                    resultJson = resultJson.substring(22, resultJson.length() - 1);
+                    JSONObject jsonObject = new JSONObject(resultJson);
+                    totalCount = jsonObject.getInt("posts-total");
+                    //Object posts = jsonObject.get("posts");
+                    JSONArray arr = jsonObject.getJSONArray("posts");
+                    //photoUrl = jsonObject.getString("photo-url-1280");
+                    photoUrl = arr.getJSONObject(0).getString("photo-url-1280");
+
+
+                    /*XmlPullParser parser = Xml.newPullParser();
                     parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
                     parser.setInput(dc.getInputStream(), null);
                     parser.nextTag();
@@ -385,7 +411,7 @@ if(error!=null)
                         }
                         eventType = parser.next();
                     }
-
+*/
 
 
 
@@ -393,9 +419,13 @@ if(error!=null)
                     e.printStackTrace();
                 }
 
-                if (totalCount != null) {
+                /*if (totalCount != null) {
                     if(hashMapUrls.get(obj)!=Integer.parseInt(totalCount))
                         hashMapUrls.put(obj.toString(), Integer.parseInt(totalCount));
+                }*/
+                if (totalCount != 0) {
+                    if(hashMapUrls.get(obj)!=totalCount)
+                        hashMapUrls.put(obj.toString(), totalCount);
                 }
             }
             //Log.d("photoUrl",urls);
@@ -495,9 +525,11 @@ if(error!=null)
             if (item.isChecked()) {
                 hashMapUrls = ConstClass.getEroticMap();
                 globalUrlsApi = ConstClass.getApi_erotic_url();
+                isEro=true;
             }else {
                 hashMapUrls = ConstClass.getScreenMap();
                 globalUrlsApi = ConstClass.getApi_lockscreen_url();
+                isEro=false;
             }
             return true;
         }

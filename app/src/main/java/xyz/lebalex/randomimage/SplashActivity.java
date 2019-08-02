@@ -106,6 +106,9 @@ public class SplashActivity extends Activity {
                 ConstClass.setErotic_url(jsonObject.getString("erotic_url"));
                 ConstClass.setLockscreen_url(jsonObject.getString("lockscreen_url"));
 
+                ConstClass.setImgLib_url(jsonObject.getString("imglib_url"));
+                ConstClass.setImgLib_count(jsonObject.getInt("imglib_count"));
+
                     PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                     if(!pInfo.versionName.equalsIgnoreCase(jsonObject.getString("ver")))
                     {
