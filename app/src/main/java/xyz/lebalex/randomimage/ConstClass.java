@@ -23,6 +23,7 @@ public class ConstClass {
     private static String lockscreen_url;
     private static String imgLib_url;
     private static int imgLib_count;
+    private static String mirror;
 
 
     public static Map<String, Integer> getScreenMap() {
@@ -158,5 +159,13 @@ public class ConstClass {
 
     public static void setImgLib_count(int imgLib_count) {
         ConstClass.imgLib_count = imgLib_count;
+    }
+
+    public static String getMirror() {
+        return mirror;
+    }
+
+    public static void setMirror(String mirror) {
+        ConstClass.mirror = mirror;
     }
 }

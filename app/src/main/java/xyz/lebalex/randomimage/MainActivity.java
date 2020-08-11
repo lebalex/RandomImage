@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private Bitmap bitmap = null;
     private static final int REQUEST_WRITE_STORAGE = 112;
-    private InterstitialAd mInterstitialAd;
+    //private InterstitialAd mInterstitialAd;
     private int countImage = 0;
     private int countImageMax = 10;
     private int tapCountForAds = 0;
@@ -96,18 +96,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         sp = getDefaultSharedPreferences(this);
-        MobileAds.initialize(this, "ca-app-pub-6392397454770928~4811740801");
+        /*MobileAds.initialize(this, "ca-app-pub-6392397454770928~4811740801");
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-6392397454770928/9366612223");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
-                // Load the next interstitial.
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
             }
 
-        });
+        });*/
 
         String error = getIntent().getStringExtra("error");
 if(error!=null)
@@ -168,12 +167,12 @@ if(error!=null)
                             if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MIN_DISTANCE
                                     ||
                                     Math.abs(e1.getX() - e2.getX()) > SWIPE_MIN_DISTANCE) {
-                                if (mInterstitialAd.isLoaded() && countImage >= countImageMax) {
+                                /*if (mInterstitialAd.isLoaded() && countImage >= countImageMax) {
                                     mInterstitialAd.show();
                                     countImage = 0;
                                     if (countImageMax < 30)
                                         countImageMax = countImageMax + 10;
-                                }
+                                }*/
                                 loadDate();
                                 countImage++;
                             }
@@ -429,7 +428,10 @@ if(error!=null)
                 }
             }
             //Log.d("photoUrl",urls);
-            return photoUrl;
+            if(ConstClass.getMirror()!=null)
+                return photoUrl.replace("66.",ConstClass.getMirror());
+            else
+                return photoUrl;
 
 
         } catch (Exception eee) {

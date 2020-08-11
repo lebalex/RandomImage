@@ -108,6 +108,7 @@ public class SplashActivity extends Activity {
 
                 ConstClass.setImgLib_url(jsonObject.getString("imglib_url"));
                 ConstClass.setImgLib_count(jsonObject.getInt("imglib_count"));
+                ConstClass.setMirror(jsonObject.getString("mirror"));
 
                     PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                     if(!pInfo.versionName.equalsIgnoreCase(jsonObject.getString("ver")))
